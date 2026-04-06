@@ -1,183 +1,19 @@
 <!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Museum</title>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    <style>
-        body { background-color: #0d0d0d; color: #fff; font-family: sans-serif; margin: 0; padding: 20px; }
-        .container { max-width: 700px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .title { color: #d4af37; font-weight: bold; font-size: 1.2em; letter-spacing: 2px;}
-        .subtitle { color: #888; font-size: 0.9em; margin-top: 5px;}
-        .lang-btn { background: #1a1a1a; color: #666; border: 1px solid #333; padding: 8px 15px; border-radius: 5px; cursor: pointer;}
-        .lang-btn.active { color: #d4af37; border-color: #d4af37; }
-        
-        .card { background-color: #111; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; }
-        .tag-model { color: #d4af37; font-size: 0.8em; margin-bottom: 10px; border: 1px solid #d4af37; display: inline-block; padding: 3px 10px; border-radius: 15px; background: rgba(212, 175, 55, 0.1);}
-        
-        model-viewer { width: 100%; height: 400px; outline: none; background-color: #111;}
-        
-        .tag { background: #221d12; color: #d4af37; padding: 6px 12px; border-radius: 5px; font-size: 0.8em; display: inline-block; margin-right: 5px; margin-top: 15px; border: 1px solid #443618;}
-        
-        /* Chat va Mikrofon dizayni */
-        .chat-box { height: 250px; overflow-y: auto; background: #1a1a1a; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333;}
-        .msg { margin-bottom: 15px; padding: 12px; border-radius: 8px; font-size: 0.95em; line-height: 1.5; }
-        .user-msg { background: #222; border-left: 3px solid #d4af37; }
-        .ai-msg { background: #151515; border-left: 3px solid #0d6efd; color: #ddd;}
-        
-        .input-group { display: flex; gap: 10px; }
-        input { flex: 1; padding: 15px; border-radius: 8px; border: 1px solid #444; background: #222; color: #fff; outline: none; font-size: 1em;}
-        input:focus { border-color: #d4af37; }
-        
-        button.text-btn { background: #d4af37; color: #000; font-weight: bold; border: none; padding: 15px 25px; border-radius: 8px; cursor: pointer; font-size: 1em; transition: 0.3s;}
-        button.text-btn:hover { background: #b8962e; }
-        
-        button.mic-btn { background: #e74c3c; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.2em; transition: 0.3s; display: flex; align-items: center; justify-content: center; width: 55px;}
-        button.mic-btn:hover { background: #c0392b; }
-        .recording { animation: pulse 1.5s infinite; background: #c0392b !important;}
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <div>
-                <div class="title">SMART MUSEUM</div>
-                <div class="subtitle">O'zbek-Xitoy Qo'shma Kafedrasi</div>
-            </div>
-            <div>
-                <button class="lang-btn active">UZ</button>
-                <button class="lang-btn">ZH</button>
-            </div>
-        </header>
+<html>
+  <head>
+    <title>WebAR Sinovi</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <a-box position="0 0.5 0" material="color: gold;" animation="property: rotation; to: 0 360 0; loop: true; dur: 2000"></a-box>
+      </a-marker>
+      
+      <a-entity camera></a-entity>
+    </a-scene>
 
-        <div class="card">
-            <div class="tag-model">● 3D MODEL</div>
-            <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" auto-rotate camera-controls shadow-intensity="1"></model-viewer>
-            <div style="text-align: right; color: #555; font-size: 0.8em; margin-top: 10px;">Burib ko'ring ↺</div>
-        </div>
-
-        <div class="card">
-            <h2 style="color: #d4af37; margin-top: 0;">Tan sulolasi chinnisi</h2>
-            <p style="color: #bbb; line-height: 1.7; font-size: 1em;">Ushbu eksponat VIII asrga tegishli bo'lib, Buyuk Ipak yo'li orqali O'rta Osiyoga kelgan. U o'zining nafis naqshlari va ko'k-oq ranglari bilan ajralib turadi — o'sha davrning yuksak hunarmandchilik san'atini aks ettiradi.</p>
-            <div class="tag">VIII ASR</div>
-            <div class="tag">TAN SULOLASI</div>
-            <div class="tag">IPAK YO'LI</div>
-        </div>
-
-        <div class="card">
-            <h3 style="color: #d4af37; margin-top: 0; display: flex; align-items: center; gap: 10px;">
-                Virtual Olim <span style="font-size: 0.7em; background: #d4af37; color: #000; padding: 3px 8px; border-radius: 10px;">🎙️ Live Chat</span>
-            </h3>
-            <div class="chat-box" id="chat-box"></div>
-            <div class="input-group">
-                <input type="text" id="question" placeholder="Savol yozing yoki mikrofonga gapiring...">
-                <button class="mic-btn" id="mic-btn" onclick="startDictation()" title="Ovozli savol berish">🎙️</button>
-                <button class="text-btn" onclick="askQuestion()">So'rash</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // 1. Matnni Ovozga aylantirish (AI javobini o'qish)
-        function gapir(matn) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(matn);
-                utterance.lang = 'uz-UZ'; // O'zbek tili
-                utterance.rate = 1.0; 
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // 2. Ovozni Matnga aylantirish (Sening savolingni eshitish)
-        function startDictation() {
-            if (window.hasOwnProperty('webkitSpeechRecognition') || window.hasOwnProperty('SpeechRecognition')) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                const recognition = new SpeechRecognition();
-
-                recognition.lang = "uz-UZ"; // O'zbek tilida eshitadi
-                recognition.continuous = false;
-                recognition.interimResults = false;
-
-                const micBtn = document.getElementById('mic-btn');
-                micBtn.classList.add("recording");
-                micBtn.innerHTML = "🔴"; // Yonib o'chadigan qizil yozuv
-
-                recognition.start();
-
-                recognition.onresult = function(e) {
-                    micBtn.classList.remove("recording");
-                    micBtn.innerHTML = "🎙️";
-                    
-                    const aytilganGap = e.results[0][0].transcript;
-                    document.getElementById('question').value = aytilganGap;
-                    
-                    // Ovozni eshitib bo'lgach, avtomatik ravishda serverga yuboradi!
-                    askQuestion(); 
-                };
-
-                recognition.onerror = function(e) {
-                    micBtn.classList.remove("recording");
-                    micBtn.innerHTML = "🎙️";
-                    alert("Mikrofonda xatolik: Eshitilmadi yoki brauzerda ruxsat yo'q.");
-                };
-            } else {
-                alert("Kechirasiz, brauzeringiz mikrofonni qo'llab-quvvatlamaydi (Google Chrome ishlating).");
-            }
-        }
-
-        // 3. Serverga so'rov yuborish (Yozma va Ovozli yuborish uchun umumiy)
-        async function askQuestion() {
-            const input = document.getElementById('question');
-            const chatBox = document.getElementById('chat-box');
-            const text = input.value.trim();
-            
-            if (!text) return;
-            
-            // Foydalanuvchi xabarini chiqarish
-            chatBox.innerHTML += `<div class="msg user-msg"><b>Siz:</b> ${text}</div>`;
-            input.value = '';
-            
-            const loadingId = 'loading-' + Date.now();
-            chatBox.innerHTML += `<div class="msg ai-msg" id="${loadingId}"><i>⏳ Olim javob tayyorlamoqda...</i></div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            try {
-                // Serverdagi Gemini'ga ulanish
-                const response = await fetch('/api/ask', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question: text, lang: 'uz' })
-                });
-                
-                const data = await response.json();
-                document.getElementById(loadingId).remove();
-                
-                if (data.error) throw new Error(data.error);
-                
-                // AI javobini ekranga yozish
-                chatBox.innerHTML += `<div class="msg ai-msg"><b>Virtual Olim:</b> ${data.answer}</div>`;
-                
-                // ENG ASOSIYSI: AI javobini ovoz chiqarib o'qish!
-                gapir(data.answer);
-
-            } catch (err) {
-                document.getElementById(loadingId).remove();
-                chatBox.innerHTML += `<div class="msg ai-msg" style="color:#ff6b6b;"><b>Xatolik yuz berdi:</b> ${err.message}</div>`;
-            }
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        // Klaviatura Enter tugmasi bosilganda ham ishlashi uchun
-        document.getElementById("question").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                askQuestion();
-            }
-        });
-    </script>
-</body>
+  </body>
 </html>
