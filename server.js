@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // API Kalit o'z joyiga qotirildi!
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyBvoE851Dc0iCc4Hr2WZNseaFE8OtMj46s';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 app.use(cors());
 app.use(express.json());
